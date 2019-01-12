@@ -1,0 +1,209 @@
+<resources>
+    <string name="app_name">NewsIt</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <array name="categories">
+        <item>Sports</item>
+        <item>Business</item>
+        <item>Entertainment</item>
+        <item>General</item>
+        <item>Health</item>
+        <item>Science</item>
+        <item>Technology</item>
+    </array>
+
+    <array name="sort_options">
+        <item>Relevance</item>
+        <item>Popularity</item>
+        <item>Most Recent</item>
+        <!--publishedAt-->
+    </array>
+
+    <array name="sort_text">
+        <item>relevancy</item>
+        <item>popularity</item>
+        <item>publishedAt</item>
+    </array>
+
+    <array name="language_options">
+        <item>Arabic</item>
+        <item>German</item>
+        <item>English</item>
+        <item>Spanish</item>
+        <item>French</item>
+        <item>Hebrew</item>
+        <item>Italian</item>
+        <item>Dutch</item>
+        <item>Norwegian</item>
+        <item>Portuguese</item>
+        <item>Russian</item>
+        <item>Serbian</item>
+        <item>Chinese</item>
+    </array>
+    <array name="language_codes">
+        <item>ar</item>
+        <item>de</item>
+        <item>en</item>
+        <item>es</item>
+        <item>fr</item>
+        <item>he</item>
+        <item>it</item>
+        <item>nl</item>
+        <item>no</item>
+        <item>pt</item>
+        <item>ru</item>
+        <item>se</item>
+        <item>zh</item>
+    </array>
+
+    <array name="Country_Codes">
+        <item>ae</item>
+        <item>ar</item>
+        <item>at</item>
+        <item>au</item>
+        <item>be</item>
+        <item>bg</item>
+        <item>br</item>
+        <item>ca</item>
+        <item>ch</item>
+        <item>cn</item>
+        <item>co</item>
+        <item>cu</item>
+        <item>cz</item>
+        <item>de</item>
+        <item>eg</item>
+        <item>fr</item>
+        <item>us</item>
+        <item>ua</item>
+        <item>ve</item>
+        <item>za</item>
+        <item>gr</item>
+    </array>
+
+    <array name="Country_Code_values">
+        <item>United Arab Emirates</item>
+        <item>Argentina</item>
+        <item>Austria</item>
+        <item>Australia</item>
+        <item>Belgium</item>
+        <item>Bulgaria</item>
+        <item>Brazil</item>
+        <item>Canada</item>
+        <item>Switzerland</item>
+        <item>China</item>
+        <item>Colombia</item>
+        <item>Cuba</item>
+        <item>Czech Republic</item>
+        <item>Germany</item>
+        <item>Egypt</item>
+        <item>France</item>
+        <item>USA</item>
+        <item>Ukraine</item>
+        <item>Venezuela</item>
+        <item>South Africa</item>
+        <item>Greece</item>
+    </array>
+
+    <array name="country_Code_Urls">
+        <item>http://www.sloveniatimes.com/modules/uploader/uploads/Aktualno/Podobe1/dbai4.jpg</item>
+        <item>https://www.verdict.co.uk/wp-content/uploads/2017/04/argentina2-1-1440x836.jpg</item>
+        <item>https://www.nationalgeographic.com/content/dam/travel/Guide-Pages/europe/austria/Austria_NationalGeographic_2618017.ngsversion.1501174663803.adapt.1900.1.jpg</item>
+        <item>http://south-seas-adventures.com/sites/default/files/country-cover-photo/2017-01/Sydney-Opera-House.jpg</item>
+        <item>https://cdn.thecrazytourist.com/wp-content/uploads/2018/05/ccimage-shutterstock_212136922.jpg</item>
+        <item>http://www.beyondtravel.com.au/wp-content/uploads/2013/06/nessebur.jpg</item>
+        <item>https://www.dikaiologitika.gr/media/k2/items/cache/7f24cf549143253ea3e9c85671971b9b_XL.jpg?t=-62169984000</item>
+        <item>https://cdn-image.travelandleisure.com/sites/default/files/styles/1600x1000/public/1529329861/quebec-city-canada-lead-CANADACITIESWB18.jpg?itok=YfqNxKOi</item>
+        <item>https://d2rdhxfof4qmbb.cloudfront.net/wp-content/uploads/20180412155447/Old-town-of-Basel-with-Munster-cathedral-Switzerland.jpg</item>
+        <item>https://www.thetrumpet.com/files/W1siZiIsIjIwMTgvMDcvMTAvNWlybmN6emhwa18xODA3MTBfQ2hpbmFfaVN0b2NrXzg2MDU5NDkyNi5qcGciXV0/ac44408e3ae4e602/180710-China-iStock-860594926.jpg</item>
+        <item>https://d3atagt0rnqk7k.cloudfront.net/wp-content/uploads/2018/02/01154318/colombia-cannabis-company-1280x800.jpg</item>
+        <item>https://imagesvc.timeincapp.com/v3/mm/image?url=https%3A%2F%2Fcdn-image.travelandleisure.com%2Fsites%2Fdefault%2Ffiles%2Fstyles%2F1600x1000%2Fpublic%2F1533838850%2Fhavana-cuba-sunrise-CUBABOOK0818.jpg</item>
+        <item>https://res.cloudinary.com/fareoffice/images/s--hAWIb1-x--/c_fill,f_auto,q_jpegmini,w_871/czech-republic-bridge-and-rooftops-of-prague/czech-republic-bridge-and-rooftops-of-prague</item>
+        <item>https://www.thelocal.de/userdata/images/article/4ca098f1ea04ab595d7fe337d1af947f44556b2fadf9a0111c843ba2055d324d.jpg</item>
+        <item>https://exclusivesmedia.webjet.com.au/uploads/2017/11/Best-Egypt-Nile-cruise-5-min.jpg</item>
+        <item>https://cdn.travel-mediaserver.com/driveaway/images/car-hire/destinations/france-large.jpg</item>
+        <item>https://www.worldatlas.com/r/w728-h425-c728x425/upload/aa/3f/2a/untitled-design-474.jpg</item>
+        <item>https://www.worldatlas.com/r/w728-h425-c728x425/upload/2b/4c/1e/shutterstock-540624181.jpg</item>
+        <item>https://www.telegraph.co.uk/content/dam/Travel/2018/June/venezuela-caracas-xlarge.jpg</item>
+        <item>http://dqndusk8a84ol.cloudfront.net/image/bbe3a6c50246dae148d65bfb94b075e8.jpg</item>
+        <item>https://dynaimage.cdn.cnn.com/cnn/q_auto,w_1024,c_fill,g_auto,h_576,ar_16:9/http%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F170606121035-greece---travel-destination---shutterstock-560829934.jpg</item>
+    </array>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_title_social_recommendations">Enable social recommendations</string>
+    <string name="pref_description_social_recommendations">Recommendations for people to contact
+        based on your message history
+    </string>
+
+    <string name="pref_title_display_name">Display name</string>
+    <string name="pref_default_display_name">John Smith</string>
+
+    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
+    <string-array name="pref_example_list_titles">
+        <item>Always</item>
+        <item>When possible</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync">Data &amp; sync</string>
+
+    <string name="pref_title_sync_frequency">Sync frequency</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+
+    <string-array name="list_preference_entries">
+        <item>Entry 1</item>
+        <item>Entry 2</item>
+        <item>Entry 3</item>
+    </string-array>
+
+    <string-array name="list_preference_entry_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="multi_select_list_preference_default_value" />
+
+    <string name="pref_title_system_sync_settings">System sync settings</string>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications">Notifications</string>
+
+    <string name="pref_title_new_message_notifications">New message notifications</string>
+
+    <string name="pref_title_ringtone">Ringtone</string>
+    <string name="pref_ringtone_silent">Silent</string>
+
+    <string name="pref_title_vibrate">Vibrate</string>
+</resources>

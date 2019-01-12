@@ -1,0 +1,101 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <PreferenceCategory
+        android:key="Categories"
+        android:title="Categories">
+
+
+        <CheckBoxPreference
+            android:key="Sports"
+            android:title="Sports" />
+        <CheckBoxPreference
+            android:key="Business"
+            android:title="Business" />
+        <CheckBoxPreference
+            android:key="Entertainment"
+            android:title="Entertainment" />
+        <CheckBoxPreference
+            android:key="General"
+            android:title="General" />
+        <CheckBoxPreference
+            android:key="Health"
+            android:title="Health" />
+        <CheckBoxPreference
+            android:key="Science"
+            android:title="Science" />
+        <CheckBoxPreference
+            android:key="Technology"
+            android:title="Technology" />
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Prefered countries">
+
+        <CheckBoxPreference
+            android:key="ae"
+            android:title="United Arab Emirates" />
+        <CheckBoxPreference
+            android:key="gr"
+            android:title="Greece" />
+        <CheckBoxPreference
+            android:key="ar"
+            android:title="Argentina" />
+        <CheckBoxPreference
+            android:key="at"
+            android:title="Austria" />
+        <CheckBoxPreference
+            android:key="au"
+            android:title="Australia" />
+        <CheckBoxPreference
+            android:key="be"
+            android:title="Belgium" />
+        <CheckBoxPreference
+            android:key="bg"
+            android:title="Bulgaria" />
+        <CheckBoxPreference
+            android:key="br"
+            android:title="Brazil" />
+        <CheckBoxPreference
+            android:key="ca"
+            android:title="Canada" />
+        <CheckBoxPreference
+            android:key="ch"
+            android:title="Switzerland" />
+        <CheckBoxPreference
+            android:key="cn"
+            android:title="China" />
+        <CheckBoxPreference
+            android:key="co"
+            android:title="Colombia" />
+        <CheckBoxPreference
+            android:key="cu"
+            android:title="Cuba" />
+        <CheckBoxPreference
+            android:key="cz"
+            android:title="Czech Republic" />
+        <CheckBoxPreference
+            android:key="de"
+            android:title="Germany" />
+        <CheckBoxPreference
+            android:key="eg"
+            android:title="Egypt" />
+        <CheckBoxPreference
+            android:key="fr"
+            android:title="France" />
+        <CheckBoxPreference
+            android:key="us"
+            android:title="USA" />
+        <CheckBoxPreference
+            android:key="ua"
+            android:title="Ukraine" />
+        <CheckBoxPreference
+            android:key="ve"
+            android:title="Venezuela" />
+        <CheckBoxPreference
+            android:key="za"
+            android:title="South Africa" />
+    </PreferenceCategory>
+
+
+
+</PreferenceScreen>

@@ -1,0 +1,15 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<resources>
+  <color name="colorPrimary">#fafafa</color>
+  <color name="colorPrimaryLight">#ffffff</color>
+  <color name="colorPrimaryDark">#c7c7c7</color>
+  <color name="colorAccent">#26c6da</color>
+  <color name="colorAccentLight">#6ff9ff</color>
+  <color name="colorAccentDark">#0095a8</color>
+  <color name="colorTextPrimary">#000000</color>
+  <color name="colorTextPrimaryInverse">#ffffff</color>
+  <color name="colorTextAccent">#000000</color>
+  <color name="colorDivider">#1f000000</color>
+  <color name="colorWindowBackground">#FAFAFA</color>
+  <color name="colorBackgroundOpacity">#1f000000</color>
+</resources>
