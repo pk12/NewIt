@@ -44,6 +44,7 @@ public class DataDownloader extends AsyncTask<String, Void, String> {
         ArrayList<Article> articles = parser.getArticles();
         synchronized (articles){
             adapter.getData().addAll(articles);
+            adapter.getDataIntact().addAll(articles);
             adapter.notifyDataSetChanged();
         }
 

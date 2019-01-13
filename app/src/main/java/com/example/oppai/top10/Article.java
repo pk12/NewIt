@@ -60,4 +60,9 @@ public class Article {
     public String getDescription() {
         return description;
     }
+
+    @Override
+    protected Article clone() throws CloneNotSupportedException {
+        return  new Article(name, author, title, url, imageUrl, publishDate, content, description);
+    }
 }

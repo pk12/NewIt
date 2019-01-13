@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.oppai.top10.Activities.MainActivity;
@@ -37,11 +38,15 @@ public class RecyclerViewFragment extends android.support.v4.app.Fragment {
     private static final String TAG = "RecyclerViewFragment";
     private String URL = "https://newsapi.org/v2/top-headlines";
     private ArrayList<String> enabledCategories;
+    private RvAdapter adapter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View RootView = inflater.inflate(R.layout.fragment_main,container,false);
+
+        adapter = new RvAdapter(new ArrayList<Article>(), getActivity(), true);
+
         if (getActivity() instanceof QuerySearchActivity)
             setHasOptionsMenu(true);
 
@@ -68,6 +73,21 @@ public class RecyclerViewFragment extends android.support.v4.app.Fragment {
             swipeRefreshLayout.setRefreshing(true);
             ChangeParameters(recyclerView, swipeRefreshLayout);
             swipeRefreshLayout.setRefreshing(false);
+        });
+
+        //init the searchview
+        SearchView searchView = RootView.findViewById(R.id.searchArticlesView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                adapter.getFilter().filter(s);
+                return true;
+            }
         });
 
 
@@ -123,7 +143,7 @@ public class RecyclerViewFragment extends android.support.v4.app.Fragment {
 
     private void DownloadData(String URL, RecyclerView mainRecyclerView){
         //Initialize layout data(Empty)
-        RvAdapter adapter = new RvAdapter(new ArrayList<Article>(), getActivity(), true);
+
 
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(1 , StaggeredGridLayoutManager.VERTICAL);
 
@@ -142,7 +162,7 @@ public class RecyclerViewFragment extends android.support.v4.app.Fragment {
     }
 
     private void DownloadQueryData(String URL, RecyclerView mainRecyclerView, Bundle paremeters){
-        RvAdapter adapter = new RvAdapter(new ArrayList<Article>(), getActivity(), true);
+
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 
         mainRecyclerView.setLayoutManager(staggeredGridLayoutManager);
