@@ -26,6 +26,7 @@ public class QueryRVAdapter extends RecyclerView.Adapter<QueryRVAdapter.QueryVie
     private Activity activity;
     private Fragment fragment;
     private Button lastCheckedButton;
+    private RvAdapter adapter;
 
     //Below DataRecyclerView content
     View rootView;
@@ -62,7 +63,7 @@ public class QueryRVAdapter extends RecyclerView.Adapter<QueryRVAdapter.QueryVie
             v.setBackgroundTintList(ColorStateList.valueOf(activity.getResources().getColor(R.color.colorAccent)));
             RecyclerView recyclerView = rootView.findViewById(R.id.search_data_rv);
 
-            RvAdapter adapter = new RvAdapter(new ArrayList<Article>(), activity, true, fragment);
+            adapter = new RvAdapter(new ArrayList<Article>(), activity, true, fragment);
             StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setAdapter(adapter);
@@ -84,6 +85,10 @@ public class QueryRVAdapter extends RecyclerView.Adapter<QueryRVAdapter.QueryVie
 
             return false;
         }));
+    }
+
+    public RvAdapter getRvAdapter() {
+        return adapter;
     }
 
     @Override

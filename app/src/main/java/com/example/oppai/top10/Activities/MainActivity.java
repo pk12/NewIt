@@ -3,6 +3,7 @@ package com.example.oppai.top10.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -14,7 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+import android.view.WindowManager;
 
 import com.example.oppai.top10.Fragments.FavoritesFragment;
 import com.example.oppai.top10.Fragments.GlobalFragment;
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setOffscreenPageLimit(3);
 
         TabLayout tabLayout = findViewById(R.id.tabs);
 
@@ -83,15 +85,18 @@ public class MainActivity extends AppCompatActivity {
 
         //Get the profile pic and username
         CircleImageView circleImageView = findViewById(R.id.profile_image);
-        TextView name = findViewById(R.id.userName);
+//        TextView name = findViewById(R.id.userName);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         Picasso.get().load(user.getPhotoUrl()).into(circleImageView);
 
-        name.setText(user.getDisplayName());
+//        name.setText(user.getDisplayName());
         toolbar.setTitle("");
+        AppBarLayout layout = findViewById(R.id.appbar);
+        layout.setElevation(0);
 
         setSupportActionBar(toolbar);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 
         //Uncomment if we use the recyclerview below the tabs
@@ -152,10 +157,9 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.sign_out){
             signOut();
         }
-        else {
+        else if (id == R.id.spinner_country_select) {
             Intent intent = new Intent(MainActivity.this, MyPreferenceActivity.class);
             startActivity(intent);
-
         }
 
 

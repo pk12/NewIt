@@ -7,9 +7,19 @@
         android:title="Done"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/searchArticlesView"
+        android:enabled="false"
+        android:icon="@drawable/ic_search_black_24dp"
+        android:title="Search"
+        android:visible="false"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/save_query"
         android:icon="@drawable/ic_save_black_24dp"
         android:title="Save query"
         android:visible="false"
         app:showAsAction="ifRoom" />
+
+    />
 </menu>

@@ -110,7 +110,7 @@ public class QuerySearchFragment extends Fragment {
             if (useSort.isChecked()){
                 int position = this.sortOptions.getSelectedItemPosition();
                 List<String> sortBy = Arrays.asList(getResources().getStringArray(R.array.sort_options));
-                bundle.putString("SortOption", "&sortBy" + sortBy.get(position));
+                bundle.putString("SortOption", "&sortBy=" + sortBy.get(position));
             }
             else bundle.putString("SortOption", "");
 
@@ -120,12 +120,12 @@ public class QuerySearchFragment extends Fragment {
                 int languagePosition = this.languageOptions.getSelectedItemPosition();
                 List<String> codes = Arrays.asList(getResources().getStringArray(R.array.language_codes));
                 String code = codes.get(languagePosition);
-                bundle.putString("LanguageCode", "&language" + code);
+                bundle.putString("LanguageCode", "&language=" + code);
             }
             else bundle.putString("LanguageCode", "");
 
             if (!fromDate.getText().equals("Select Date")){
-                bundle.putString("FromDate", "&from" + fromDate.getText().toString());
+                bundle.putString("FromDate", "&from=" + fromDate.getText().toString());
             }
             else bundle.putString("FromDate", "");
 

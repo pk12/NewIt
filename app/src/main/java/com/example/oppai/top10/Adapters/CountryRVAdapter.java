@@ -7,25 +7,30 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.oppai.top10.Activities.CountryActivity;
 import com.example.oppai.top10.Country;
+import com.example.oppai.top10.CountryFilter;
 import com.example.oppai.top10.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 
-public class CountryRVAdapter extends RecyclerView.Adapter<CountryRVAdapter.SelectionRVViewHolder> {
-    private ArrayList<Country> countries;
+public class CountryRVAdapter extends RecyclerView.Adapter<CountryRVAdapter.SelectionRVViewHolder> implements Filterable {
+    private ArrayList<Country> countries, intactData;
     private Activity activity;
 
 
     public CountryRVAdapter(ArrayList<Country> countries, Activity activity) {
         this.activity = activity;
         this.countries = countries;
+        this.intactData = new ArrayList<>();
+        this.intactData.addAll(countries);
 
     }
 
@@ -50,6 +55,15 @@ public class CountryRVAdapter extends RecyclerView.Adapter<CountryRVAdapter.Sele
         return countries.size();
     }
 
+    @Override
+    public Filter getFilter() {
+        return new CountryFilter(countries, intactData,this);
+    }
+
+    public ArrayList<Country> getCountries() {
+        return countries;
+    }
+
     public class SelectionRVViewHolder extends RecyclerView.ViewHolder implements RecyclerView.OnClickListener {
         private TextView countryTextView;
         private ImageView countryImg;
@@ -65,6 +79,7 @@ public class CountryRVAdapter extends RecyclerView.Adapter<CountryRVAdapter.Sele
         public void onClick(View v) {
             Intent intent = new Intent(activity, CountryActivity.class);
             intent.putExtra("Country", countries.get(getLayoutPosition()).getCode());
+            intent.putExtra("CountryName", countryTextView.getText().toString());
             activity.startActivity(intent);
             //dont finish in case we want to go back
         }

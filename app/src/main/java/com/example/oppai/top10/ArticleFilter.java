@@ -29,7 +29,7 @@ public class ArticleFilter extends Filter {
         }
         else {
             for (Article article: intactArticles) {
-                if (article.getTitle().toLowerCase().contains(query.toLowerCase()) || article.getDescription().contains(query)){
+                if (article.getTitle().toLowerCase().contains(query.toLowerCase())){
                     filteredArticles.add(article);
                 }
             }

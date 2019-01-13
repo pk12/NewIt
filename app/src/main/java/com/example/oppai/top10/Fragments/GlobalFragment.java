@@ -8,7 +8,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -24,6 +27,7 @@ import java.util.List;
 public class GlobalFragment extends Fragment {
     private String URL = "https://newsapi.org/v2/top-headlines";
     private ArrayList<Country> preferredCountries;
+    CountryRVAdapter rvAdapter;
 
     @Nullable
     @Override
@@ -34,6 +38,7 @@ public class GlobalFragment extends Fragment {
         SwipeRefreshLayout layout = Rootview.findViewById(R.id.SwipeRefresh);
         layout.setEnabled(false);
         layout.setRefreshing(false);
+        setHasOptionsMenu(true);
 
         RecyclerView recyclerView = Rootview.findViewById(R.id.RecyclerViewMain);
         preferredCountries = new ArrayList<>();
@@ -58,18 +63,39 @@ public class GlobalFragment extends Fragment {
 
         }
 
-        CountryRVAdapter rvAdapter = new CountryRVAdapter(preferredCountries, getActivity());
+        rvAdapter = new CountryRVAdapter(preferredCountries, getActivity());
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
 
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(rvAdapter);
 
 
-
-
         return Rootview;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
 
+        SearchView searchView = (SearchView) menu.findItem(R.id.searchArticlesView).getActionView();
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                rvAdapter.getFilter().filter("");
+                return true;
+            }
+        });
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                rvAdapter.getFilter().filter(newText);
+                return true;
+            }
+        });
+    }
 }

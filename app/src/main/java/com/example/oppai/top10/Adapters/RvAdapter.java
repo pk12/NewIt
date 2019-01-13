@@ -21,6 +21,7 @@ import com.example.oppai.top10.Activities.WebViewActivity;
 import com.example.oppai.top10.Article;
 import com.example.oppai.top10.ArticleFilter;
 import com.example.oppai.top10.Fragments.FavoritesFragment;
+import com.example.oppai.top10.Fragments.RecyclerViewFragment;
 import com.example.oppai.top10.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -28,12 +29,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvViewHolder> implements Filterable {
     private ArrayList<Article> data, dataIntact;
     private Activity activity;
     private int itemLayout;
+    private DatabaseReference reference;
 
 
 
@@ -51,7 +52,8 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvViewHolder> impl
 
         }
         this.dataIntact = new ArrayList<>();
-        Collections.copy(this.dataIntact, this.data);
+        this.dataIntact.addAll(data);
+        reference = FirebaseDatabase.getInstance().getReference("Favorites").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
     }
 
     public RvAdapter(ArrayList<Article> data, Activity activity, boolean isVertical){
@@ -67,6 +69,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvViewHolder> impl
 
         this.dataIntact = new ArrayList<>();
         this.dataIntact.addAll(data);
+        reference = FirebaseDatabase.getInstance().getReference("Favorites").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
     }
 
@@ -78,8 +81,9 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvViewHolder> impl
         constraintSet.clone(holder.constraintLayout);
         constraintSet.connect(R.id.titleTextView,ConstraintSet.TOP, R.id.urlImageView, ConstraintSet.BOTTOM, 16);
         constraintSet.applyTo(holder.constraintLayout);
-        holder.action.setBackgroundResource(R.drawable.ic_favorite_border_black_24dp);
-        //TODO: Reset hearts
+
+        if (fragment instanceof RecyclerViewFragment)
+            holder.action.setBackgroundResource(R.drawable.ic_favorite_border_black_24dp);
     }
 
     @NonNull
@@ -98,37 +102,33 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvViewHolder> impl
 
         //Add the listener out of the onClick to make sure not to initialize a lot of listeners needlessly
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Favorites").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        reference = reference.child(data.get(position).getTitle().replace('.',' ').replace('#', ' ').replace('$', ' ').replace('[', ' ').replace(']', ' '));
+
         //set onclick listener for action button
         DatabaseReference finalReference = reference;
 
-        //Get favorites list
 
-
-
-        holder.action.setOnCheckedChangeListener((view, isChecked) -> {
-            if (fragment instanceof FavoritesFragment){
-                finalReference.removeValue();
-                Toast.makeText(activity.getApplicationContext(), "Removed from favorites", Toast.LENGTH_SHORT).show();
-            }
-            else {
-                //Update the view
-                //TODO: check the saved hearts
-                if (isChecked){
-                    view.setBackgroundResource(R.drawable.ic_favorite_black_24dp);
-                    finalReference.setValue(data.get(position));
-                    Toast.makeText(activity.getApplicationContext(), "Added to favorites", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    view.setBackgroundResource(R.drawable.ic_favorite_border_black_24dp);
-                    finalReference.removeValue();
-                    Toast.makeText(activity.getApplicationContext(), "Removed from favorites", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-
-        });
+//        holder.action.setOnCheckedChangeListener((view, isChecked) -> {
+//            if (fragment instanceof FavoritesFragment){
+//                finalReference.removeValue();
+//                Toast.makeText(activity.getApplicationContext(), "Removed from favorites", Toast.LENGTH_SHORT).show();
+//            }
+//            else {
+//                //Update the view
+//                //TODO: check the saved hearts
+//                if (isChecked){
+//                    view.setBackgroundResource(R.drawable.ic_favorite_black_24dp);
+//                    finalReference.setValue(data.get(position));
+//                    Toast.makeText(activity.getApplicationContext(), "Added to favorites", Toast.LENGTH_SHORT).show();
+//                }
+//                else {
+//                    view.setBackgroundResource(R.drawable.ic_favorite_border_black_24dp);
+//                    finalReference.removeValue();
+//                    Toast.makeText(activity.getApplicationContext(), "Removed from favorites", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//
+//        });
 
 
 
@@ -191,6 +191,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvViewHolder> impl
             action = itemView.findViewById(R.id.favButton);
             constraintLayout = itemView.findViewById(R.id.cardConstraintLayout);
             itemView.setOnClickListener(this);
+            action.setOnClickListener(this::onClick);
 
             if (fragment instanceof FavoritesFragment){
                 action.setBackgroundResource(R.drawable.ic_delete_black_24dp);
@@ -199,10 +200,50 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvViewHolder> impl
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(RvAdapter.this.activity.getApplicationContext(), WebViewActivity.class);
-            int position = getLayoutPosition();
-            intent.putExtra("URL", data.get(position).getUrl());
-            activity.startActivity(intent);
+
+            //Avoid binding many listeners by using one generic
+            switch (v.getId()){
+                case R.id.favButton:
+                    //ToggleButton button = activity.findViewById(R.id.favButton);
+                    ToggleButton button = (ToggleButton) v;
+                    boolean isChecked = button.isChecked();
+                    reference = reference.child(data.get(getAdapterPosition()).getTitle().replace('.',' ').replace('#', ' ')
+                            .replace('$', ' ').replace('[', ' ').replace(']', ' '));
+
+                    if (fragment instanceof FavoritesFragment){
+                        reference.removeValue();
+                        data.remove(getAdapterPosition());
+                        RvAdapter.this.notifyDataSetChanged();
+                        Toast.makeText(activity.getApplicationContext(), "Removed from favorites", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        //Update the view
+                        //TODO: check the saved hearts
+                        if (isChecked){
+                            v.setBackgroundResource(R.drawable.ic_favorite_black_24dp);
+                            reference.setValue(data.get(getAdapterPosition()));
+                            Toast.makeText(activity.getApplicationContext(), "Added to favorites", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            v.setBackgroundResource(R.drawable.ic_favorite_border_black_24dp);
+                            reference.removeValue();
+                            data.remove(getAdapterPosition());
+                            RvAdapter.this.notifyDataSetChanged();
+                            Toast.makeText(activity.getApplicationContext(), "Removed from favorites", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    ResetReference();
+                    break;
+                default:
+                    Intent intent = new Intent(RvAdapter.this.activity.getApplicationContext(), WebViewActivity.class);
+                    int position = getLayoutPosition();
+                    intent.putExtra("URL", data.get(position).getUrl());
+                    activity.startActivity(intent);
+
+
+
+
+            }
 
 
 
@@ -212,5 +253,9 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvViewHolder> impl
 
     public ArrayList<Article> getData() {
         return data;
+    }
+
+    private void ResetReference(){
+        reference = FirebaseDatabase.getInstance().getReference("Favorites").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
     }
 }

@@ -5,7 +5,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -24,16 +27,18 @@ import java.util.ArrayList;
 
 public class SearchesFragment extends Fragment {
     private ArrayList<Query> queries;
+    private QueryRVAdapter adapter;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View RootView = inflater.inflate(R.layout.fragment_searches, container, false);
+        setHasOptionsMenu(true);
 
         RecyclerView recyclerView = RootView.findViewById(R.id.queriesRV);
         queries = new ArrayList<>();
 
         //Init adapter
-        QueryRVAdapter adapter = new QueryRVAdapter(queries, getActivity(), RootView, this);
+        adapter = new QueryRVAdapter(queries, getActivity(), RootView, this);
 
         //Init LayoutManager
         FlowLayoutManager layoutManager = new FlowLayoutManager();
@@ -67,5 +72,34 @@ public class SearchesFragment extends Fragment {
         });
 
         return RootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        SearchView searchView = (SearchView) menu.findItem(R.id.searchArticlesView).getActionView();
+        searchView.setOnCloseListener(() -> {
+            //set the initial adapter data
+            adapter.getRvAdapter().getFilter().filter("");
+            return true;
+        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (adapter != null){
+                    adapter.getRvAdapter().getFilter().filter(newText);
+                    return true;
+                }
+                return false;
+
+            }
+        });
     }
 }

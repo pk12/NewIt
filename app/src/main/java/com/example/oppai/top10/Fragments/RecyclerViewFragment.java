@@ -2,20 +2,22 @@ package com.example.oppai.top10.Fragments;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.os.ConfigurationCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.oppai.top10.Activities.MainActivity;
@@ -39,6 +41,8 @@ public class RecyclerViewFragment extends android.support.v4.app.Fragment {
     private String URL = "https://newsapi.org/v2/top-headlines";
     private ArrayList<String> enabledCategories;
     private RvAdapter adapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private Handler myHandler;
 
     @Nullable
     @Override
@@ -47,8 +51,8 @@ public class RecyclerViewFragment extends android.support.v4.app.Fragment {
 
         adapter = new RvAdapter(new ArrayList<Article>(), getActivity(), true);
 
-        if (getActivity() instanceof QuerySearchActivity)
-            setHasOptionsMenu(true);
+        //for the custom menus
+        setHasOptionsMenu(true);
 
 
         //Get Category data and make them selected or not
@@ -63,36 +67,34 @@ public class RecyclerViewFragment extends android.support.v4.app.Fragment {
         }
 
         RecyclerView recyclerView = RootView.findViewById(R.id.RecyclerViewMain);
-        SwipeRefreshLayout swipeRefreshLayout = RootView.findViewById(R.id.SwipeRefresh);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setItemViewCacheSize(20);
+        recyclerView.setDrawingCacheEnabled(true);
+        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+
+        swipeRefreshLayout = RootView.findViewById(R.id.SwipeRefresh);
+
 
         //Check what activity is the current one and get the correct params
         ChangeParameters(recyclerView, swipeRefreshLayout);
-
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimaryDark), getResources().getColor(R.color.colorAccentDark));
         //Swipe To refresh Listener
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            swipeRefreshLayout.setRefreshing(true);
-            ChangeParameters(recyclerView, swipeRefreshLayout);
-            swipeRefreshLayout.setRefreshing(false);
+            myHandler = new Handler();
+            myHandler.post(() -> {
+                swipeRefreshLayout.setRefreshing(true);
+                ChangeParameters(recyclerView, swipeRefreshLayout);
+                swipeRefreshLayout.setRefreshing(false);
+            });
+
         });
 
-        //init the searchview
-        SearchView searchView = RootView.findViewById(R.id.searchArticlesView);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
 
-            @Override
-            public boolean onQueryTextChange(String s) {
-                adapter.getFilter().filter(s);
-                return true;
-            }
-        });
 
 
         return RootView;
     }
+
 
     private void ChangeParameters(RecyclerView recyclerView, SwipeRefreshLayout swipeRefreshLayout){
         if (getActivity() instanceof MainActivity){
@@ -121,9 +123,15 @@ public class RecyclerViewFragment extends android.support.v4.app.Fragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        menu.findItem(R.id.preference_done).setVisible(false);
-        menu.findItem(R.id.save_query).setVisible(true);
+        if (getActivity() instanceof QuerySearchActivity){
+            menu.findItem(R.id.preference_done).setVisible(false);
+            menu.findItem(R.id.save_query).setVisible(true);
+            menu.findItem(R.id.searchArticlesView).setVisible(true);
+        }
+
+
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -134,11 +142,42 @@ public class RecyclerViewFragment extends android.support.v4.app.Fragment {
             case R.id.save_query:
                 SaveQuery();
                 return true;
-
         }
-
-
         return false;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        android.support.v7.widget.SearchView searchView = (android.support.v7.widget.SearchView) menu.findItem(R.id.searchArticlesView).getActionView();
+        searchView.setOnCloseListener(() -> {
+            //set the initial adapter data
+            adapter.getFilter().filter("");
+            return true;
+        });
+        //init the searchview
+        searchView.setOnQueryTextListener((new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+
+                //if it is not empty then dont do anything
+                if (!s.isEmpty()){
+                    swipeRefreshLayout.setEnabled(false);
+                }
+
+                swipeRefreshLayout.setEnabled(true);
+                adapter.getFilter().filter(s);
+                return true;
+
+
+            }
+        }));
     }
 
     private void DownloadData(String URL, RecyclerView mainRecyclerView){
