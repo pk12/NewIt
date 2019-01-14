@@ -40,6 +40,9 @@ public class GlobalFragment extends Fragment {
         layout.setRefreshing(false);
         setHasOptionsMenu(true);
 
+        Rootview.findViewById(R.id.noResultsImageView).setVisibility(View.GONE);
+        Rootview.findViewById(R.id.NoResultsTextView).setVisibility(View.GONE);
+
         RecyclerView recyclerView = Rootview.findViewById(R.id.RecyclerViewMain);
         preferredCountries = new ArrayList<>();
 
@@ -78,12 +81,9 @@ public class GlobalFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
 
         SearchView searchView = (SearchView) menu.findItem(R.id.searchArticlesView).getActionView();
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                rvAdapter.getFilter().filter("");
-                return true;
-            }
+        searchView.setOnCloseListener(() -> {
+            rvAdapter.getFilter().filter("");
+            return true;
         });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

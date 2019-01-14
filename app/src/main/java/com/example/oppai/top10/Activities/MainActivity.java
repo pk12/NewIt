@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.example.oppai.top10.Fragments.FavoritesFragment;
 import com.example.oppai.top10.Fragments.GlobalFragment;
@@ -85,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Get the profile pic and username
         CircleImageView circleImageView = findViewById(R.id.profile_image);
-//        TextView name = findViewById(R.id.userName);
+        TextView name = findViewById(R.id.userName);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         Picasso.get().load(user.getPhotoUrl()).into(circleImageView);

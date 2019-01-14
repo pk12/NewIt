@@ -57,7 +57,7 @@ public class CountryRVAdapter extends RecyclerView.Adapter<CountryRVAdapter.Sele
 
     @Override
     public Filter getFilter() {
-        return new CountryFilter(countries, intactData,this);
+        return new CountryFilter(countries, intactData,this, activity);
     }
 
     public ArrayList<Country> getCountries() {

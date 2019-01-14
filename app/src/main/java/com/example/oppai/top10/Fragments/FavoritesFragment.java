@@ -13,6 +13,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.oppai.top10.Adapters.RvAdapter;
 import com.example.oppai.top10.Article;
@@ -27,8 +29,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class FavoritesFragment extends Fragment {
-    private ArrayList<Article> articles;
     private RvAdapter adapter;
+    TextView textView;
+    ImageView imageView;
 
     @Nullable
     @Override
@@ -39,11 +42,11 @@ public class FavoritesFragment extends Fragment {
         swipeRefreshLayout.setEnabled(false);
 
         RecyclerView recyclerView = RootView.findViewById(R.id.RecyclerViewMain);
-        articles = new ArrayList<>();
 
-
+        imageView = RootView.findViewById(R.id.noResultsImageView);
+        textView = RootView.findViewById(R.id.NoResultsTextView);
         //connect RecyclerView to adapter
-        adapter = new RvAdapter(articles, getActivity(), true, FavoritesFragment.this);
+        adapter = new RvAdapter(new ArrayList<>(), getActivity(), textView, imageView, FavoritesFragment.this);
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
 
         recyclerView.setLayoutManager(layoutManager);
@@ -57,14 +60,24 @@ public class FavoritesFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     if (dataSnapshot.getChildren() != null) {
-                        articles.clear();
+                        adapter.getData().clear();
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            articles.add(snapshot.getValue(Article.class));
+                            adapter.getData().add(snapshot.getValue(Article.class));
                         }
+                        adapter.getDataIntact().addAll(adapter.getData());
                     }
 
                     //notify datasetchanged
                     adapter.notifyDataSetChanged();
+                    if (adapter.getItemCount() > 0){
+                        //hide no results
+                        RootView.findViewById(R.id.noResultsImageView).setVisibility(View.GONE);
+                        RootView.findViewById(R.id.NoResultsTextView).setVisibility(View.GONE);
+                    }
+                    else {
+                        RootView.findViewById(R.id.noResultsImageView).setVisibility(View.VISIBLE);
+                        RootView.findViewById(R.id.NoResultsTextView).setVisibility(View.VISIBLE);
+                    }
                 }
 
 

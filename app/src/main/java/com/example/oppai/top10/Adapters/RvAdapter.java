@@ -35,8 +35,21 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvViewHolder> impl
     private Activity activity;
     private int itemLayout;
     private DatabaseReference reference;
+    private TextView textView;
+    private ImageView imageView;
 
+    public RvAdapter(ArrayList<Article> data, Activity activity, TextView textView, ImageView imageView, Fragment fragment) {
+        this.data = data;
+        this.dataIntact = new ArrayList<>();
+        this.dataIntact.addAll(data);
+        this.activity = activity;
+        this.textView = textView;
+        this.imageView = imageView;
+        this.fragment = fragment;
+        this.itemLayout = R.layout.recycleritem;
+        reference = FirebaseDatabase.getInstance().getReference("Favorites").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
+    }
 
     private Fragment fragment;
 
@@ -171,8 +184,12 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvViewHolder> impl
 
     @Override
     public Filter getFilter() {
-        return new ArticleFilter(data, this, dataIntact);
+        if (fragment instanceof FavoritesFragment){
+            return new ArticleFilter(data, dataIntact, this, textView, imageView);
+        }
+        return new ArticleFilter(data, this, dataIntact, activity);
     }
+
 
 
     public class RvViewHolder extends RecyclerView.ViewHolder implements RecyclerView.OnClickListener {
@@ -213,7 +230,16 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvViewHolder> impl
                     if (fragment instanceof FavoritesFragment){
                         reference.removeValue();
                         data.remove(getAdapterPosition());
+                        dataIntact.remove(getAdapterPosition());
                         RvAdapter.this.notifyDataSetChanged();
+                        if (getItemCount() == 0){
+                            textView.setVisibility(View.VISIBLE);
+                            imageView.setVisibility(View.VISIBLE);
+                        }
+                        else {
+                            textView.setVisibility(View.GONE);
+                            imageView.setVisibility(View.GONE);
+                        }
                         Toast.makeText(activity.getApplicationContext(), "Removed from favorites", Toast.LENGTH_SHORT).show();
                     }
                     else {
@@ -227,8 +253,6 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvViewHolder> impl
                         else {
                             v.setBackgroundResource(R.drawable.ic_favorite_border_black_24dp);
                             reference.removeValue();
-                            data.remove(getAdapterPosition());
-                            RvAdapter.this.notifyDataSetChanged();
                             Toast.makeText(activity.getApplicationContext(), "Removed from favorites", Toast.LENGTH_SHORT).show();
                         }
                     }

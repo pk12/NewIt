@@ -33,6 +33,8 @@ public class SearchesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View RootView = inflater.inflate(R.layout.fragment_searches, container, false);
         setHasOptionsMenu(true);
+        RootView.findViewById(R.id.noResultsImageView).setVisibility(View.GONE);
+        RootView.findViewById(R.id.NoResultsTextView).setVisibility(View.GONE);
 
         RecyclerView recyclerView = RootView.findViewById(R.id.queriesRV);
         queries = new ArrayList<>();
@@ -93,7 +95,7 @@ public class SearchesFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (adapter != null){
+                if (adapter.getRvAdapter() != null){
                     adapter.getRvAdapter().getFilter().filter(newText);
                     return true;
                 }

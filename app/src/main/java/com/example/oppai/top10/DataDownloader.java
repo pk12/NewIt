@@ -3,6 +3,7 @@ package com.example.oppai.top10;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
 
 import com.example.oppai.top10.Adapters.RvAdapter;
 
@@ -46,6 +47,15 @@ public class DataDownloader extends AsyncTask<String, Void, String> {
             adapter.getData().addAll(articles);
             adapter.getDataIntact().addAll(articles);
             adapter.notifyDataSetChanged();
+            if (adapter.getItemCount() > 0){
+                //hide no results
+                activity.findViewById(R.id.noResultsImageView).setVisibility(View.GONE);
+                activity.findViewById(R.id.NoResultsTextView).setVisibility(View.GONE);
+            }
+            else {
+                activity.findViewById(R.id.noResultsImageView).setVisibility(View.VISIBLE);
+                activity.findViewById(R.id.NoResultsTextView).setVisibility(View.VISIBLE);
+            }
         }
 
 
