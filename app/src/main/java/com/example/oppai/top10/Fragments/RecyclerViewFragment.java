@@ -50,7 +50,7 @@ public class RecyclerViewFragment extends android.support.v4.app.Fragment {
         View RootView = inflater.inflate(R.layout.fragment_main,container,false);
 
         adapter = new RvAdapter(new ArrayList<Article>(), getActivity(), true);
-
+        adapter.setHasStableIds(true);
         //for the custom menus
         setHasOptionsMenu(true);
 
@@ -67,10 +67,9 @@ public class RecyclerViewFragment extends android.support.v4.app.Fragment {
         }
 
         RecyclerView recyclerView = RootView.findViewById(R.id.RecyclerViewMain);
-        recyclerView.setHasFixedSize(true);
         recyclerView.setItemViewCacheSize(20);
         recyclerView.setDrawingCacheEnabled(true);
-        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
         swipeRefreshLayout = RootView.findViewById(R.id.SwipeRefresh);
 

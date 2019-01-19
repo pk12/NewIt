@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         Picasso.get().load(user.getPhotoUrl()).into(circleImageView);
 
-//        name.setText(user.getDisplayName());
+        name.setText(user.getDisplayName());
         toolbar.setTitle("");
         AppBarLayout layout = findViewById(R.id.appbar);
         layout.setElevation(0);

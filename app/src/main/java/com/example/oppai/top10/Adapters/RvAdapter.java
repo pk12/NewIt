@@ -2,6 +2,7 @@ package com.example.oppai.top10.Adapters;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -198,6 +200,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvViewHolder> impl
         private TextView description;
         private ImageView urlPic;
         private ToggleButton action;
+        private ImageButton share;
         ConstraintLayout constraintLayout;
 
         public RvViewHolder(View itemView) {
@@ -207,7 +210,9 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvViewHolder> impl
             urlPic = itemView.findViewById(R.id.urlImageView);
             action = itemView.findViewById(R.id.favButton);
             constraintLayout = itemView.findViewById(R.id.cardConstraintLayout);
+            share = itemView.findViewById(R.id.shareButton);
             itemView.setOnClickListener(this);
+            share.setOnClickListener(this::onClick);
             action.setOnClickListener(this::onClick);
 
             if (fragment instanceof FavoritesFragment){
@@ -258,11 +263,20 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvViewHolder> impl
                     }
                     ResetReference();
                     break;
+                case R.id.shareButton:
+                    //start a share intent
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+                    intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(getData().get(getAdapterPosition()).getUrl()));
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "Share link");
+                    activity.startActivity(Intent.createChooser(intent, "Share URL"));
+                    break;
                 default:
-                    Intent intent = new Intent(RvAdapter.this.activity.getApplicationContext(), WebViewActivity.class);
+                    Intent intenWebt = new Intent(RvAdapter.this.activity.getApplicationContext(), WebViewActivity.class);
                     int position = getLayoutPosition();
-                    intent.putExtra("URL", data.get(position).getUrl());
-                    activity.startActivity(intent);
+                    intenWebt.putExtra("URL", data.get(position).getUrl());
+                    activity.startActivity(intenWebt);
+                    break;
 
 
 

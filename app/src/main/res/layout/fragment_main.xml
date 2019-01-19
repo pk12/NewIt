@@ -40,7 +40,7 @@
                 android:id="@+id/noResultsImageView"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_marginLeft="170dp"
+                android:layout_marginLeft="150dp"
                 android:layout_marginTop="200dp"
                 app:srcCompat="@drawable/ic_no_results" />
 
@@ -48,7 +48,7 @@
                 android:id="@+id/NoResultsTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="140dp"
+                android:layout_marginLeft="110dp"
                 android:text="No results found"
                 android:textAppearance="@android:style/TextAppearance.Material.Medium" />
 
