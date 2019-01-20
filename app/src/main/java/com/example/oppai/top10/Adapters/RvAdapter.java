@@ -7,10 +7,13 @@ import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageButton;
@@ -39,6 +42,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvViewHolder> impl
     private DatabaseReference reference;
     private TextView textView;
     private ImageView imageView;
+    private int lastPosition;
 
     public RvAdapter(ArrayList<Article> data, Activity activity, TextView textView, ImageView imageView, Fragment fragment) {
         this.data = data;
@@ -49,6 +53,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvViewHolder> impl
         this.imageView = imageView;
         this.fragment = fragment;
         this.itemLayout = R.layout.recycleritem;
+        lastPosition = -1;
         reference = FirebaseDatabase.getInstance().getReference("Favorites").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
     }
@@ -68,6 +73,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvViewHolder> impl
         }
         this.dataIntact = new ArrayList<>();
         this.dataIntact.addAll(data);
+        lastPosition = -1;
         reference = FirebaseDatabase.getInstance().getReference("Favorites").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
     }
 
@@ -84,6 +90,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvViewHolder> impl
 
         this.dataIntact = new ArrayList<>();
         this.dataIntact.addAll(data);
+        lastPosition = -1;
         reference = FirebaseDatabase.getInstance().getReference("Favorites").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
     }
@@ -147,7 +154,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvViewHolder> impl
 
 
 
-
+        setAnimation(holder.cardView, position);
         //Check if some of the data equals null
         if(!str.equals("null")){
             holder.description.setText(str);
@@ -192,6 +199,14 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvViewHolder> impl
         return new ArticleFilter(data, this, dataIntact, activity);
     }
 
+    private void setAnimation(View v, int position){
+        if (position > lastPosition) {
+            Animation animation = AnimationUtils.loadAnimation(activity.getApplicationContext(), R.anim.expand_in);
+            v.startAnimation(animation);
+            lastPosition = position;
+        }
+    }
+
 
 
     public class RvViewHolder extends RecyclerView.ViewHolder implements RecyclerView.OnClickListener {
@@ -201,6 +216,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvViewHolder> impl
         private ImageView urlPic;
         private ToggleButton action;
         private ImageButton share;
+        private CardView cardView;
         ConstraintLayout constraintLayout;
 
         public RvViewHolder(View itemView) {
@@ -211,6 +227,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvViewHolder> impl
             action = itemView.findViewById(R.id.favButton);
             constraintLayout = itemView.findViewById(R.id.cardConstraintLayout);
             share = itemView.findViewById(R.id.shareButton);
+            cardView = itemView.findViewById(R.id.RVCardview);
             itemView.setOnClickListener(this);
             share.setOnClickListener(this::onClick);
             action.setOnClickListener(this::onClick);
@@ -267,7 +284,9 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvViewHolder> impl
                     //start a share intent
                     Intent intent = new Intent(Intent.ACTION_SEND);
                     intent.setType("text/plain");
-                    intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(getData().get(getAdapterPosition()).getUrl()));
+                    intent.putExtra(Intent.EXTRA_ORIGINATING_URI, Uri.parse(getData().get(getAdapterPosition()).getUrl()));
+                    intent.putExtra(Intent.EXTRA_TEXT,  getData().get(getAdapterPosition()).getUrl());
+                    intent.putExtra(Intent.EXTRA_STREAM, getData().get(getAdapterPosition()).getUrl());
                     intent.putExtra(Intent.EXTRA_SUBJECT, "Share link");
                     activity.startActivity(Intent.createChooser(intent, "Share URL"));
                     break;

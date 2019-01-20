@@ -67,10 +67,7 @@ public class RecyclerViewFragment extends android.support.v4.app.Fragment {
         }
 
         RecyclerView recyclerView = RootView.findViewById(R.id.RecyclerViewMain);
-        recyclerView.setItemViewCacheSize(20);
-        recyclerView.setDrawingCacheEnabled(true);
-        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-
+        recyclerView.setHasFixedSize(true);
         swipeRefreshLayout = RootView.findViewById(R.id.SwipeRefresh);
 
 
